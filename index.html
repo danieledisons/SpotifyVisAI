@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="styles.css" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Spotify Music Exploration</title>
+</head>
+
+<body>
+    <!-- Green button that redirects to netGraph.html -->
+    
+    <h1 class="main-title" style="display: flex; justify-content: space-between; align-items: center;">Music Moods 
+        <a href="netGraph.html" class="green-button">
+            Go to Artist Network Graph
+        </a>
+        <a href="genreNetGraph.html" class="green-button">
+            Go to Genre Network Graph
+        </a>
+    </h1>
+    <div class="cord-containter">
+        <div>
+            <p class="color-identifiers-blue">Tiesto (EDM Genre)</p>
+            <p class="color-identifiers-red">Ed Sheeran (RnB Genre)</p>
+            <p class="color-identifiers-pink">Enrique Iglesias (Latin Genre)</p>
+            <p class="color-identifiers-green">Future (Rap Genre)</p>
+        </div>
+        <div class="parralel-plot" id="my_dataviz"></div>
+    </div>
+
+    <!-- New divider and scatter plot container -->
+    <div class="divider"></div>
+    <div class="visualization-container">
+        <div class="scatter-container">
+            <div class="scatter-controls">
+                <div class="axis-select">
+                    <label for="x-axis">X Axis:</label>
+                    <select id="x-axis">
+                        <option value="danceability">Danceability</option>
+                        <option value="energy">Energy</option>
+                        <option value="liveness">Liveness</option>
+                        <option value="speechiness">Speechiness</option>
+                        <option value="acousticness">Acousticness</option>
+                        <option value="tempo">Tempo</option>
+                        <option value="track_popularity">Popularity</option>
+                    </select>
+                </div>
+                <div class="axis-select">
+                    <label for="y-axis">Y Axis:</label>
+                    <select id="y-axis">
+                        <option value="track_popularity">Popularity</option>
+                        <option value="danceability">Danceability</option>
+                        <option value="energy">Energy</option>
+                        <option value="liveness">Liveness</option>
+                        <option value="speechiness">Speechiness</option>
+                        <option value="acousticness">Acousticness</option>
+                        <option value="tempo">Tempo</option>
+                    </select>
+                </div>
+            </div>
+            <div id="scatter_plot"></div>
+        </div>
+        <div class="barchart-container">
+            <div id="barchart1"></div>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="artist-radar-section">
+        <h3 class="section-title">Artist Musical Signatures</h3>
+        <div id="artist-buttons" class="artist-buttons">
+        </div>
+        <div style="margin-left: 600px" id="radar-chart"></div>
+    </div>
+
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="d3.js"></script>
+</body>
+
+</html>

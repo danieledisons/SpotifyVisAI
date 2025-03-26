@@ -1,0 +1,254 @@
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #172A3A;
+
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #333;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-size: 12px;
+    color: gainsboro;
+}
+
+.line {
+    fill: none;
+    stroke-width: 1.5px;
+    opacity: 0.7;
+    transition: opacity 0.3s, stroke-width 0.3s;
+}
+
+.line:hover {
+    stroke-width: 3px;
+    opacity: 1;
+}
+
+.main-title {
+    color: #1DB954;
+    border-bottom: 1px solid #1DB954;
+    font-size: 2.8rem;
+}
+.cord-containter {
+    display: flex;
+    /* border-bottom: 1px solid #1DB954; */
+    /* justify-content: center; */
+    align-items: center;
+    padding: auto;
+    
+}
+.color-identifiers-blue {
+    border: 1px solid #00bbf9;
+    border-radius: 2%;
+    padding: 12px;
+    color: white;
+    background-color: #00bbf9;
+}
+.color-identifiers-red {
+    /* width: 100%; */
+    border: 1px solid #e63946;
+    border-radius: 2%;
+    padding: 12px;
+    color: white;
+    background-color: #e63946;
+}
+.color-identifiers-pink {
+    border: 1px solid #f15bb5;
+    border-radius: 2%;
+    padding: 12px;
+    color: white;
+    background-color: #f15bb5;
+}
+.color-identifiers-green {
+    border: 1px solid #70e000;
+    border-radius: 2%;
+    padding: 12px;
+    color: white;
+    background-color: #70e000;
+}
+
+/* New styles */
+.divider {
+    height: 2px;
+    background-color: #1DB954;
+    margin: 40px 0;
+}
+
+.scatter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Update and add new styles */
+.visualization-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+}
+
+.scatter-container {
+    flex: 1;
+    min-width: 0; /* Prevents flex item from overflowing */
+    background-color: #1e3547;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.barchart-container {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#barchart1, #barchart2 {
+    background-color: #1e3547;
+    border-radius: 8px;
+    padding: 20px;
+    height: calc(50% - 10px); /* Subtracting half the gap */
+}
+
+.tooltip {
+    background-color: #1e3547;
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 12px;
+    
+}
+
+.scatter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.axis-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 200px;
+}
+
+.axis-select select {
+    background-color: #1e3547;
+    color: white;
+    border: 1px solid white;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.axis-select label {
+    font-size: 14px;
+}
+
+.artist-radar-section {
+    padding: 20px;
+}
+
+.section-title {
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.artist-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.artist-btn {
+    background-color: #1e3547;
+    color: white;
+    border: 1px solid white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.artist-btn:hover {
+    background-color: #1DB954;
+    border-color: #1DB954;
+}
+
+.artist-btn.active {
+    background-color: #1DB954;
+    border-color: #1DB954;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.pagination-btn {
+    background-color: #1e3547;
+    color: white;
+    border: 1px solid white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pagination-btn:hover:not([style*="opacity: 0.5"]) {
+    background-color: #1DB954;
+    border-color: #1DB954;
+}
+
+.page-indicator {
+    color: white;
+    font-size: 14px;
+}
+
+.artist-buttons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+    width: 100%;
+}
+
+.artist-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.green-button {
+    background-color: #28a745; /* Green color */
+    color: white; /* White text */
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin: 20px;
+    text-align: center;
+}
+
+.green-button:hover {
+    background-color: #218838; /* Darker green on hover */
+}

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Graph Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: #172A3A;
+            /* Dark background */
+            color: #fff;
+            /* Text color for contrast */
+        }
+
+        #header {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #header h1 {
+            color: #1DB954;
+            /* Spotify green */
+        }
+
+        #graph-container-1,
+        #graph-container-2,
+        #graph-container-3 {
+            width: 33%;
+            height: 50vh;
+            float: left;
+        }
+
+        .input-fields {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 14px;
+            margin: 5px;
+            width: 200px;
+        }
+
+        .main-title {
+            color: #1DB954;
+            border-bottom: 1px solid #1DB954;
+            font-size: 2.8rem;
+        }
+
+        .green-button {
+            background-color: #28a745;
+            /* Green color */
+            color: white;
+            /* White text */
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px;
+            text-align: center;
+        }
+
+        .green-button:hover {
+            background-color: #218838;
+            /* Darker green on hover */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            margin-top: 5px;
+            cursor: pointer;
+            background-color: #1DB954;
+            /* Button background matches title */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #17a44b;
+            /* Slightly darker on hover */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header">
+        <h1 class="main-title" style="display: flex; justify-content: space-between; align-items: center;">Music Moods
+            <a href="genreNetGraph.html" class="green-button">
+                Go to Genre Network Graph
+            </a>
+            <a href="index.html" class="green-button">Go to Home Page</a></h1>
+        <h1>Network Graph of Spotify Songs Based On Artists</h1>
+        <p>Note: Artist Names are Case Sensitive</p>
+        <p>Hints: Ed Sheeran, Katy Perry, Maroon 5</p>
+        <div class="input-fields">
+            <input type="text" id="artist1" placeholder="Enter Artist 1 Name" />
+            <input type="text" id="artist2" placeholder="Enter Artist 2 Name" />
+            <input type="text" id="artist3" placeholder="Enter Artist 3 Name" />
+            <button onclick="loadGraphs()">Generate Graphs</button>
+        </div>
+    </div>
+
+    <div id="graph-container-1"></div>
+    <div id="graph-container-2"></div>
+    <div id="graph-container-3"></div>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script>
+        // Convert the JSON data into a network graph structure
+        function convertToNetworkGraph(data, artistName) {
+            const nodes = [];
+            const links = [];
+
+            const addNode = (id, type) => {
+                if (!nodes.some(node => node.id === id)) {
+                    nodes.push({ id, type });
+                }
+            };
+
+            data.forEach(item => {
+                // Filter data for the selected artist's songs
+                if (item.track_artist === artistName) {
+                    addNode(item.track_name, "song");
+                    addNode(item.track_artist, "artist");
+                    links.push({
+                        source: item.track_artist,
+                        target: item.track_name
+                    });
+                }
+            });
+
+            return { nodes, links };
+        }
+
+        // Fetch the JSON data (in this case, it would be a file)
+        function loadGraphs() {
+            const artist1 = document.getElementById('artist1').value.trim();
+            const artist2 = document.getElementById('artist2').value.trim();
+            const artist3 = document.getElementById('artist3').value.trim();
+
+            if (artist1 && artist2 && artist3) {
+                // Clear the previous graph containers
+                document.getElementById('graph-container-1').innerHTML = '';
+                document.getElementById('graph-container-2').innerHTML = '';
+                document.getElementById('graph-container-3').innerHTML = '';
+
+                fetch('spotify_songs1.json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const graphData1 = convertToNetworkGraph(data, artist1);
+                        createNetworkGraph(graphData1, 'graph-container-1', artist1); // First graph container for artist1
+                        const graphData2 = convertToNetworkGraph(data, artist2);
+                        createNetworkGraph(graphData2, 'graph-container-2', artist2); // Second graph container for artist2
+                        const graphData3 = convertToNetworkGraph(data, artist3);
+                        createNetworkGraph(graphData3, 'graph-container-3', artist3); // Third graph container for artist3
+                    })
+                    .catch(err => console.error("Error loading JSON data:", err));
+            } else {
+                alert("Please enter all three artist names!");
+            }
+        }
+
+        // Create a simple network graph using D3.js
+        function createNetworkGraph(graphData, containerId, artistName) {
+            const width = window.innerWidth / 3; // Adjust width for three graphs
+            const height = window.innerHeight / 2; // Adjust height for multiple graphs
+
+            const artistColors = {
+                'Artist 1': '#FF5733', // Red for artist 1
+                'Artist 2': '#33B5FF', // Blue for artist 2
+                'Artist 3': '#FFEB33', // Yellow for artist 3
+                // Add more artists and their respective colors here
+            };
+
+            const svg = d3.select(`#${containerId}`)
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const simulation = d3.forceSimulation(graphData.nodes)
+                .force('link', d3.forceLink(graphData.links).id(d => d.id).distance(150))  // Increased distance between nodes
+                .force('charge', d3.forceManyBody().strength(-100))  // Reduced strength to spread nodes out
+                .force('center', d3.forceCenter(width / 2, height / 2));
+
+            const link = svg.append('g')
+                .selectAll('.link')
+                .data(graphData.links)
+                .enter().append('line')
+                .attr('class', 'link')
+                .attr('stroke', '#ccc')
+                .attr('stroke-width', 2);
+
+            const node = svg.append('g')
+                .selectAll('.node')
+                .data(graphData.nodes)
+                .enter().append('circle')
+                .attr('class', 'node')
+                .attr('r', 10)
+                .attr('fill', d => {
+                    if (d.type === 'song') return 'orange';
+                    if (d.type === 'artist') {
+                        return artistColors[artistName] || '#FF5733'; // Default to red if no match
+                    }
+                    return 'gray';
+                })
+                .call(d3.drag()
+                    .on('start', dragStarted)
+                    .on('drag', dragging)
+                    .on('end', dragEnded));
+
+            const labels = svg.append('g')
+                .selectAll('.label')
+                .data(graphData.nodes)
+                .enter().append('text')
+                .attr('class', 'label')
+                .attr('x', 12)
+                .attr('y', 3)
+                .attr('font-size', d => d.type === 'song' ? '10px' : '12px')  // Smaller font size for songs
+                .attr('fill', 'white')  // Font color white
+                .text(d => d.id);
+
+            simulation.on('tick', () => {
+                link
+                    .attr('x1', d => d.source.x)
+                    .attr('y1', d => d.source.y)
+                    .attr('x2', d => d.target.x)
+                    .attr('y2', d => d.target.y);
+
+                node
+                    .attr('cx', d => d.x)
+                    .attr('cy', d => d.y);
+
+                labels
+                    .attr('x', d => d.x)
+                    .attr('y', d => d.y);
+            });
+
+            function dragStarted(event) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                event.subject.fx = event.subject.x;
+                event.subject.fy = event.subject.y;
+            }
+
+            function dragging(event) {
+                event.subject.fx = event.x;
+                event.subject.fy = event.y;
+            }
+
+            function dragEnded(event) {
+                if (!event.active) simulation.alphaTarget(0);
+                event.subject.fx = null;
+                event.subject.fy = null;
+            }
+        }
+
+
+    </script>
+</body>
+
+</html>
