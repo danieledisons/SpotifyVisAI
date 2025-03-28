@@ -52,8 +52,8 @@ d3.csv("/cleanedSpotify.csv")
     // - Enrique Iglesias: #f15bb5 (pink)
     const color = d3
       .scaleOrdinal()
-      .domain(["Ed Sheeran", "Tiesto", "Future", "Enrique Iglesias"]) // Define categories (artists)
-      .range(["#d90027", "#0077ff", "#36b000", "#e6007e"]); // Vibrant and bold shades
+      .domain(["Ed Sheeran", "Tiesto", "Future", "Enrique Iglesias"]) 
+      .range(["#d90027", "#0077ff", "#36b000", "#e6007e"]); 
 
     // For each dimension, build a linear scale and store them in a y object
     var y = {};
@@ -69,21 +69,21 @@ d3.csv("/cleanedSpotify.csv")
         .range([height, 0]);
     }
 
-    // Build the X scale -> it finds the best position for each Y axis
+    // Build the X scale
     var x = d3.scalePoint().range([0, width]).padding(0.4).domain(dimensions);
 
-    // Highlight the specie that is hovered
+ 
     const highlight = function (event, d) {
-      selected_artist = d.track_artist.replace(/\s+/g, "_"); // Replace spaces with underscores
+      selected_artist = d.track_artist.replace(/\s+/g, "_"); 
 
-      // first every group turns grey
+
       d3.selectAll(".line")
         .transition()
         .duration(200)
         .style("stroke", "lightgrey")
         .style("opacity", "0.2");
 
-      // Second the hovered specie takes its color
+  
       d3.selectAll("." + selected_artist)
         .transition()
         .duration(200)
